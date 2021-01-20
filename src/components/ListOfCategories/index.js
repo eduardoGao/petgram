@@ -1,30 +1,30 @@
 import React, { useEffect, useState } from 'react'
 import { Category } from "../Category"
 import { List } from "./styles"
+import { SpinerSVG } from "../Spiner"
 
 import { categories as MockCategories } from "../../../api/db.json"
 
-export function ListOfCategories() {
+const useCategoriesData = () => {
   const [categories, setCategories] = useState([])
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     const fetchCategories = async () => {
       const response = await fetch('https://petgram-api-wheat.vercel.app/categories')
       const data = await response.json()
       setCategories(data)
+      setLoading(false)
     }
     fetchCategories()
   }, [])
 
-  const renderList = (fixed) => (
-    <List className={fixed ? "fixed" : ""}>
-      {
-        categories.map(category => (
-          <li key={category.id}><Category cover={category.cover} emoji={category.emoji} path={category.path} /></li>
-        ))
-      }
-    </List>
-  )
+  return { categories, loading }
+}
+
+export function ListOfCategories() {
+  const { categories, loading } = useCategoriesData()
+
 
   const [isFixed, setIsFixed] = useState(false)
 
@@ -39,6 +39,18 @@ export function ListOfCategories() {
     return () => document.removeEventListener('scroll', handleScroll)
 
   }, [isFixed])
+
+  const renderList = (fixed) => (
+    loading
+      ? <SpinerSVG />
+      : <List fixed={fixed}>
+        {
+          categories.map(category => (
+            <li key={category.id}><Category cover={category.cover} emoji={category.emoji} path={category.path} /></li>
+          ))
+        }
+      </List>
+  )
 
   return (
     <>
