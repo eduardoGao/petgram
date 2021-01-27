@@ -10,11 +10,15 @@ import { Favorite } from "./pages/Favorite"
 import { Profile } from "./pages/Profile"
 import { NotRegisterUser } from "./pages/NotRegisterUser"
 
+import Context from "./Context"
+
 function App() {
 
   const UserLogged = ({ children }) => {
     return children({ isAuth: true })
   }
+
+  
 
   return (
     <div>
@@ -26,7 +30,7 @@ function App() {
         <Detail path="/detail/:detailId" />
       </Router>
         
-      <UserLogged>
+      <Context.Consumer>
         {
           ({ isAuth }) => 
             isAuth
@@ -42,7 +46,7 @@ function App() {
         
         }
         
-      </UserLogged>
+      </Context.Consumer>
         
         
       <Navbar />
