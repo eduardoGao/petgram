@@ -46,7 +46,9 @@ export function ListOfCategories() {
       : <List fixed={fixed}>
         {
           categories.map(category => (
-            <li key={category.id}><Category cover={category.cover} emoji={category.emoji} path={category.path} /></li>
+            <li key={category.id}>
+              <Category cover={category.cover} emoji={category.emoji} path={`/pet/${category.id}`} />
+            </li>
           ))
         }
       </List>

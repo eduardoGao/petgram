@@ -5,7 +5,9 @@ import { MdFavoriteBorder, MdFavorite } from "react-icons/md";
 import { Article, ImgWrapper, Button } from "./styles"
 import { useLocalStorage } from "../../hooks/useLocalStorage"
 import { useIntersectionObserver } from "../../hooks/useIntersectionObserver"
-
+import { FavButton } from "../FavButton"
+import { ToggleLikeMutation } from "../../container/ToggleLikeMutation" 
+import { Link } from "@reach/router"
 
 export function Photocard({ src = default_image, likes = 0, id }) {
 
@@ -14,26 +16,30 @@ export function Photocard({ src = default_image, likes = 0, id }) {
   const key = `like-${id}`
   const [liked, setLiked] = useLocalStorage(key, false)
 
-
+  
 
   return (
     <Article ref={reference}>
       {
         isShow &&
         <>
-          <a href={`/?detail=${id}`} >
+          <Link to={`/detail/${id}`} >
             <ImgWrapper>
               <img src={src} />
             </ImgWrapper>
-            <Button onClick={() => setLiked(!liked)}>
+            <ToggleLikeMutation>
               {
-                !liked
-                  ? <MdFavoriteBorder size='25px' />
-                  : <MdFavorite size='25px' />
+                (toggleLike) => {
+                  const handleFav = () => {
+                    !liked && toggleLike({ variables: { input: { id } } })
+                    setLiked(!liked)
+                  }
+
+                  return <FavButton onClick={handleFav} liked={liked} likes={likes} />
+                }
               }
-              {likes} Likes
-          </Button>
-          </a>
+            </ToggleLikeMutation>
+          </Link>
         </>
 
       }
