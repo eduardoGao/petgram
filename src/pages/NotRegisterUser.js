@@ -12,14 +12,16 @@ return (
                     return (
                         <RegisterMutation>
                             {
-                                (register) => {
+                                (register, { data, loading, error }) => {
                                     const onSubmit = ({ email, password }) => {
                                         const input = { email, password }
                                         const variables = { input }
                                         register({ variables })
                                             .then(activateAuth)
                                     }
-                                    return <UserForm onSubmit={onSubmit} title="Iniciar Sesión" />
+                                    const errMsg = error && "Hubo algún problema o el usuario ya existe"
+
+                                    return <UserForm onSubmit={onSubmit} error={errMsg} disabled={loading} title="Iniciar Sesión" />
                                 }
                             }
                         </RegisterMutation>

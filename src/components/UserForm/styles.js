@@ -20,6 +20,10 @@ export const Form = styled.form`
             border: 1px solid #f2f2f2;
             //background: red;
         }
+
+        &[disabled] {
+            opacity: .3;
+        }
     }
 `
 
@@ -30,9 +34,19 @@ export const Button = styled.button`
     width: 100%;
     padding: 1em;
     border-radius: .5em
+
+    &[disabled] {
+        opacity: .1;
+    }
 `
 
 export const Title = styled.h2`
     margin-bottom: .5em;
     font-size: 1.2em;
+`
+
+export const Error = styled.span`
+    color: red;
+    font-size: .75em;
+    margin-top: 1.25em;
 `
